@@ -1,5 +1,8 @@
 package com.companystructure.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -21,6 +24,7 @@ public class Department implements Serializable {
     private Date dateCreation;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "department",cascade = CascadeType.ALL)
+
     private List<Worker> workers;
 
     public int getIdDeaprtment() {

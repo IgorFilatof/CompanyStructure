@@ -1,11 +1,14 @@
-package com.companystructure.dao;
+package com.companystructure.dao.WorkedDao;
 
-
+import com.companystructure.model.Department;
 import com.companystructure.model.Worker;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,20 +19,26 @@ public class WorkerDaoImpl implements WorkerDao {
     private SessionFactory sessionFactory;
 
     @Override
+    @Transactional
     public void addWorker(Worker worker) {
         Session session = sessionFactory.openSession();
-        session.persist(worker);
+        session.beginTransaction();
+        session.saveOrUpdate(worker);
+        session.getTransaction().commit();
         session.close();
     }
 
     @Override
     public void updateWorker(Worker worker) {
         Session session = sessionFactory.openSession();
-        session.update(worker);
+        session.beginTransaction();
+        session.saveOrUpdate(worker);
+        session.getTransaction().commit();
         session.close();
     }
 
     @Override
+    @Transactional
     public Worker getWorkerById(int id) {
         Session session = sessionFactory.openSession();
         Worker worker = session.load(Worker.class, id);
@@ -41,11 +50,16 @@ public class WorkerDaoImpl implements WorkerDao {
     public void dismissalWorker(int id) {
         Session session = sessionFactory.openSession();
         Worker worker = session.load(Worker.class, id);
+        //  worker.setDateEndWork(2008/3/27);
         session.close();
     }
 
     @Override
     public void transferWorker(int id) {
+        Session session=sessionFactory.openSession();
+        session.beginTransaction();
+        String hqlUpdate="update Worker set id_dep";
+        session.close();
 
     }
 
@@ -55,13 +69,21 @@ public class WorkerDaoImpl implements WorkerDao {
     }
 
     @Override
-    public void getLeader() {
-
+    public Worker getLeader() {
+        Session session = sessionFactory.openSession();
+        Criteria criteria = session.createCriteria(Worker.class);
+        criteria.add(Restrictions.eq("isLeader", true));
+        Worker worker=(Worker)criteria.uniqueResult();
+        return worker;
     }
 
     @Override
-    public List<Worker> searchWorker() {
-        return null;
+    public List<Worker> searchWorker(String name) {
+        Session session=sessionFactory.openSession();
+        Criteria criteria=session.createCriteria(Worker.class);
+        criteria.add(Restrictions.eq("name",name));
+        List<Worker> workerList=criteria.list();
+        return workerList;
     }
 
     @Override

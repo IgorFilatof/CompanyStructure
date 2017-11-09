@@ -1,11 +1,11 @@
-package com.companystructure.service;
+package com.companystructure.dao.WorkedDao;
 
 
 import com.companystructure.model.Worker;
 
 import java.util.List;
 
-public interface WorkerService {
+public interface WorkerDao {
     void addWorker(Worker worker);
 
     void updateWorker(Worker worker);
@@ -18,9 +18,9 @@ public interface WorkerService {
 
     void transferAllWorkers();
 
-    void getLeader();
+    Worker getLeader();
 
-    List<Worker> searchWorker();
+    List<Worker> searchWorker(String name);
 
     List<Worker> getAllWorker();
 }

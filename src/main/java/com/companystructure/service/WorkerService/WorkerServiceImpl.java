@@ -1,12 +1,14 @@
-package com.companystructure.service;
+package com.companystructure.service.WorkerService;
 
 
-import com.companystructure.dao.WorkerDao;
+import com.companystructure.dao.WorkedDao.WorkerDao;
 import com.companystructure.model.Worker;
+import com.companystructure.service.WorkerService.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class WorkerServiceImpl implements WorkerService {
     @Autowired
@@ -43,13 +45,13 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public void getLeader() {
-
+    public Worker getLeader() {
+      return  workerDao.getLeader();
     }
 
     @Override
-    public List<Worker> searchWorker() {
-        return null;
+    public List<Worker> searchWorker(String name) {
+        return workerDao.searchWorker(name);
     }
 
     @Override

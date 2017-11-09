@@ -1,16 +1,21 @@
 package com.companystructure.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Entity
 @Table(name = "worker")
+@Proxy(lazy = false)
 public class Worker implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY  )
     @Column(name = "id_worker")
     private int idWorker;
 
@@ -26,7 +31,7 @@ public class Worker implements Serializable {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "birtday_date")
+    @Column(name = "birthday_date")
     private Date birthdayDate;
 
     @Column(name = "phone_number")
@@ -39,7 +44,7 @@ public class Worker implements Serializable {
     private Date dateStartWork;
 
     @Column(name ="date_end_work")
-    private Date dateEndWork;
+    private GregorianCalendar dateEndWork;
 
     @Column(name = "position")
     private String position;
@@ -50,8 +55,9 @@ public class Worker implements Serializable {
     @Column(name = "is_leader")
     private boolean isLeader;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "id_dep")
+    @JsonIgnore
     private Department department;
 
     public int getId() {
@@ -126,11 +132,11 @@ public class Worker implements Serializable {
         this.dateStartWork = dateStartWork;
     }
 
-    public Date getDateEndWork() {
+    public GregorianCalendar getDateEndWork() {
         return dateEndWork;
     }
 
-    public void setDateEndWork(Date dateEndWork) {
+    public void setDateEndWork(GregorianCalendar dateEndWork) {
         this.dateEndWork = dateEndWork;
     }
 
@@ -157,4 +163,6 @@ public class Worker implements Serializable {
     public void setLeader(boolean leader) {
         isLeader = leader;
     }
+
+
 }
