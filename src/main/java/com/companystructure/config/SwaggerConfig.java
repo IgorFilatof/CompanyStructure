@@ -1,6 +1,6 @@
 package com.companystructure.config;
 
-import com.companystructure.controller.WorkerController;
+import com.companystructure.controller.Controller;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +14,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @PropertySource("classpath:swagger.properties")
-@ComponentScan(basePackageClasses = WorkerController.class)
+@ComponentScan(basePackageClasses = Controller.class)
 @Configuration
 public class SwaggerConfig {
 
     private static final String SWAGGER_API_VERSION = "1.0";
     private static final String LICENSE_TEXT = "License";
-    private static final String title = "Worker REST API";
-    private static final String description = "RESTful API for Worker";
+    private static final String title = "Controller REST API";
+    private static final String description = "RESTful API Controller";
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
@@ -33,12 +33,13 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket workerApi() {
+    public Docket controllerApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .pathMapping("/")
                 .select()
-                .paths(PathSelectors.regex("/worker.*"))
+                .paths(PathSelectors.regex("/company.*"))
                 .build();
     }
+
 }

@@ -14,13 +14,13 @@ public interface WorkerService {
 
     void dismissalWorker(int id);
 
-    void transferWorker(int id);
+    void transferWorker(int idDep,int idWorker);
 
-    void transferAllWorkers();
+    void transferAllWorkers(int idOldDep, int idNewDep);
 
-    Worker getLeader();
+    List getLeader(int idDep);
 
     List<Worker> searchWorker(String name);
 
-    List<Worker> getAllWorker();
+    List<Worker> getAllWorker(int idDep);
 }

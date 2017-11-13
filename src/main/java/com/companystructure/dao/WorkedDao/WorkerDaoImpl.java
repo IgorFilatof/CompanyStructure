@@ -2,9 +2,7 @@ package com.companystructure.dao.WorkedDao;
 
 import com.companystructure.model.Department;
 import com.companystructure.model.Worker;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -55,41 +53,60 @@ public class WorkerDaoImpl implements WorkerDao {
     }
 
     @Override
-    public void transferWorker(int id) {
-        Session session=sessionFactory.openSession();
-        session.beginTransaction();
-        String hqlUpdate="update Worker set id_dep";
+    public void transferWorker(int idDep, int idWorker) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("update Worker set department.idDepartment= :depParam where idWorker= :id");
+        query.setParameter("depParam", idDep);
+        query.setParameter("id", idWorker);
+        query.executeUpdate();
+        transaction.commit();
         session.close();
 
     }
 
     @Override
-    public void transferAllWorkers() {
+    public void transferAllWorkers(int idOldDep, int idNewDep) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("update Worker set department.idDepartment= :depParam where department.idDepartment= :id");
+        query.setParameter("depParam", idNewDep);
+        query.setParameter("id", idOldDep);
+        query.executeUpdate();
+        transaction.commit();
+        session.close();
 
     }
 
     @Override
-    public Worker getLeader() {
+    public List getLeader(int idDep) {
         Session session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(Worker.class);
-        criteria.add(Restrictions.eq("isLeader", true));
-        Worker worker=(Worker)criteria.uniqueResult();
-        return worker;
+        Query query = session.createQuery("from Worker where isLeader=true and department.idDepartment= :idDep");
+        query.setParameter("idDep", idDep);
+        List list = query.list();
+        session.close();
+        return list;
     }
 
     @Override
     public List<Worker> searchWorker(String name) {
-        Session session=sessionFactory.openSession();
-        Criteria criteria=session.createCriteria(Worker.class);
-        criteria.add(Restrictions.eq("name",name));
-        List<Worker> workerList=criteria.list();
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("from Worker where name= :nameWorker");
+        query.setParameter("nameWorker", name);
+        List<Worker> workerList = query.list();
+        session.close();
         return workerList;
     }
 
     @Override
-    public List<Worker> getAllWorker() {
+    public List getAllWorker(int idDep) {
         Session session = sessionFactory.openSession();
-        List<Worker> workerList = session.createQuery("from Worker").list();
+        session.beginTransaction();
+        Query query = session.createQuery("from Worker where department.idDepartment= :idDep");
+        query.setParameter("idDep", idDep);
+        List workerList = query.list();
+        session.getTransaction().commit();
+        session.close();
         return workerList;
     }
 }

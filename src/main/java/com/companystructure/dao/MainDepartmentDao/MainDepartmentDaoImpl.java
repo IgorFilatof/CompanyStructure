@@ -1,7 +1,6 @@
-package com.companystructure.dao.DepartmentDao;
+package com.companystructure.dao.MainDepartmentDao;
 
-
-import com.companystructure.model.Department;
+import com.companystructure.model.MainDepartment;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,16 +11,17 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class DepartmentdaoImpl implements DepartmentDao {
+public class MainDepartmentDaoImpl implements MainDepartmentDao {
 
     @Autowired
     private SessionFactory sessionFactory;
 
+
     @Override
-    public void addDepartment(Department department) {
+    public void addMainDepartment(MainDepartment mainDepartment) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.saveOrUpdate(department);
+        session.saveOrUpdate(mainDepartment);
         session.getTransaction().commit();
         session.close();
     }
@@ -30,7 +30,7 @@ public class DepartmentdaoImpl implements DepartmentDao {
     public void updateDepartment(String name, int id) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("update Department set nameDepartment= :nameDep where idDepartment= :idDep");
+        Query query = session.createQuery("update MainDepartment set nameMainDep= :nameDep where idDepartment= :idDep");
         query.setParameter("nameDep", name);
         query.setParameter("idDep", id);
         query.executeUpdate();
@@ -38,11 +38,10 @@ public class DepartmentdaoImpl implements DepartmentDao {
         session.close();
     }
 
-
     @Override
     public void deleteDepartment(int id) {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("from Worker where department.idDepartment= :idDep");
+        Query query = session.createQuery("from Department where MainDepartment.idMaindep= :idDep");
         query.setParameter("idDep", id);
         List list = query.list();
         if (!list.isEmpty()) {
@@ -53,7 +52,7 @@ public class DepartmentdaoImpl implements DepartmentDao {
             }
         } else {
             Transaction transaction = session.beginTransaction();
-            Query query1 = session.createQuery("delete from Department where idDepartment= :idDepart");
+            Query query1 = session.createQuery("delete from MainDepartment where idMaindep= :idDepart");
             query1.setParameter("idDepart", id);
             query1.executeUpdate();
             transaction.commit();
@@ -62,24 +61,23 @@ public class DepartmentdaoImpl implements DepartmentDao {
     }
 
     @Override
-    public Department getDepartmentById(int id) {
+    public List getDepartmentById(int id) {
         Session session = sessionFactory.openSession();
-        Department department = session.load(Department.class, new Integer(id));
+       Query query=session.createQuery("from MainDepartment where idMaindep= :idDep");
+       query.setParameter("idDep",id);
+       List list=query.list();
         session.close();
-        return department;
+        return list;
     }
 
+
     @Override
-    public Integer getAllSalaryInDepartment(int id) {
+    public List getAllDepartmentInMainDepartment(int id) {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("select salary from Worker where department.idDepartment= :idDep");
+        Query query = session.createQuery("from Department where mainDepartment= :idDep");
         query.setParameter("idDep", id);
         List<Integer> list = query.list();
-        int allSalary = 0;
-        for (Integer integer : list) {
-            allSalary += integer;
-        }
-
-        return allSalary;
+        session.close();
+        return list;
     }
 }

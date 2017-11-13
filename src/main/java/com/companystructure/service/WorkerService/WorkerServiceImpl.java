@@ -35,18 +35,18 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public void transferWorker(int id) {
-
+    public void transferWorker(int idDep,int idWorker) {
+        workerDao.transferWorker(idDep,idWorker);
     }
 
     @Override
-    public void transferAllWorkers() {
-
+    public void transferAllWorkers(int idOldDep, int idNewDep) {
+        workerDao.transferAllWorkers(idOldDep, idNewDep);
     }
 
     @Override
-    public Worker getLeader() {
-      return  workerDao.getLeader();
+    public List getLeader(int idDep) {
+        return workerDao.getLeader(idDep);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<Worker> getAllWorker() {
-        return workerDao.getAllWorker();
+    public List getAllWorker(int idDep) {
+        return workerDao.getAllWorker(idDep);
     }
 }

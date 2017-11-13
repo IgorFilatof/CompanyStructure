@@ -2,6 +2,7 @@ package com.companystructure.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,12 +11,13 @@ import java.util.List;
 
 @Entity
 @Table(name = "department")
+@Proxy(lazy = false)
 public class Department implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_dep")
-    private int idDeaprtment;
+    private int idDepartment;
 
     @Column(name = "name_department")
     private String nameDepartment;
@@ -24,15 +26,20 @@ public class Department implements Serializable {
     private Date dateCreation;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "department",cascade = CascadeType.ALL)
-
+    @JsonIgnore
     private List<Worker> workers;
 
-    public int getIdDeaprtment() {
-        return idDeaprtment;
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_main")
+    @JsonIgnore
+    private MainDepartment mainDepartment;
+
+    public int getIdDepartment() {
+        return idDepartment;
     }
 
-    public void setIdDeaprtment(int idDeaprtment) {
-        this.idDeaprtment = idDeaprtment;
+    public void setIdDepartment(int idDepartment) {
+        this.idDepartment = idDepartment;
     }
 
     public String getNameDepartment() {
