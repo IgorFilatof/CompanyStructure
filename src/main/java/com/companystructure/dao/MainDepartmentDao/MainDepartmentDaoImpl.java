@@ -38,32 +38,12 @@ public class MainDepartmentDaoImpl implements MainDepartmentDao {
         session.close();
     }
 
-    @Override
-    public void deleteDepartment(int id) {
-        Session session = sessionFactory.openSession();
-        Query query = session.createQuery("from Department where MainDepartment.idMaindep= :idDep");
-        query.setParameter("idDep", id);
-        List list = query.list();
-        if (!list.isEmpty()) {
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            Transaction transaction = session.beginTransaction();
-            Query query1 = session.createQuery("delete from MainDepartment where idMaindep= :idDepart");
-            query1.setParameter("idDepart", id);
-            query1.executeUpdate();
-            transaction.commit();
-        }
-        session.close();
-    }
+
 
     @Override
     public List getDepartmentById(int id) {
         Session session = sessionFactory.openSession();
-       Query query=session.createQuery("from MainDepartment where idMaindep= :idDep");
+       Query query=session.createQuery("select m from MainDepartment m where m.idMaindep= :idDep");
        query.setParameter("idDep",id);
        List list=query.list();
         session.close();
@@ -74,7 +54,7 @@ public class MainDepartmentDaoImpl implements MainDepartmentDao {
     @Override
     public List getAllDepartmentInMainDepartment(int id) {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("from Department where mainDepartment= :idDep");
+        Query query = session.createQuery("from Department where department.mainDepartment= :idDep");
         query.setParameter("idDep", id);
         List<Integer> list = query.list();
         session.close();

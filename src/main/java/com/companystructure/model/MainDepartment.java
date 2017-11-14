@@ -20,7 +20,7 @@ public class MainDepartment {
     @Column(name = "name_department")
     private String nameMainDep;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "mainDepartment",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "mainDepartment",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Department> departmentList;
 }

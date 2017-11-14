@@ -23,10 +23,6 @@ public class MainDepartmentServiceImpl implements MainDepartmentService {
         mainDepartmentDao.updateDepartment(name, id);
     }
 
-    @Override
-    public void deleteDepartment(int id) {
-        mainDepartmentDao.deleteDepartment(id);
-    }
 
     @Override
     public List getDepartmentById(int id) {

@@ -109,4 +109,17 @@ public class WorkerDaoImpl implements WorkerDao {
         session.close();
         return workerList;
     }
+
+    public int checkSalaryLeader(int idDep){
+        int salary=0;
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("select salary from Worker where isLeader= :true and department.idDepartment= :idDep ");
+        query.setParameter("idDep", idDep);
+        List<Integer> workerList = query.list();
+        session.close();
+        if(!workerList.isEmpty()){
+            salary=  workerList.get(0);
+        }
+        return salary ;
+    }
 }

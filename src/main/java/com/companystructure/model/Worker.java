@@ -3,9 +3,12 @@ package com.companystructure.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Proxy;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -38,13 +41,14 @@ public class Worker implements Serializable {
     private String phoneNumber;
 
     @Column(name = "email")
+    @Email
     private String email;
 
     @Column(name = "date_start_work")
     private Date dateStartWork;
 
     @Column(name ="date_end_work")
-    private GregorianCalendar dateEndWork;
+    private Date dateEndWork;
 
     @Column(name = "position")
     private String position;
@@ -59,6 +63,14 @@ public class Worker implements Serializable {
     @JoinColumn(name = "id_dep")
     @JsonIgnore
     private Department department;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
     public int getId() {
         return idWorker;
@@ -132,11 +144,11 @@ public class Worker implements Serializable {
         this.dateStartWork = dateStartWork;
     }
 
-    public GregorianCalendar getDateEndWork() {
+    public Date getDateEndWork() {
         return dateEndWork;
     }
 
-    public void setDateEndWork(GregorianCalendar dateEndWork) {
+    public void setDateEndWork(Date dateEndWork) {
         this.dateEndWork = dateEndWork;
     }
 

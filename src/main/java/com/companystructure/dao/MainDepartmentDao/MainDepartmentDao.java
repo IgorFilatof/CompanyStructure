@@ -10,7 +10,6 @@ public interface MainDepartmentDao {
 
     void addMainDepartment(MainDepartment mainDepartment);
     void updateDepartment(String name,int id);
-    void deleteDepartment(int id);
     List getDepartmentById(int id);
     List getAllDepartmentInMainDepartment(int id);
 }

@@ -32,12 +32,14 @@ public class Controller {
     @Autowired
     private MainDepartmentService mainDepartmentService;
 
+
+
     @RequestMapping(value = "/worker/add", method = RequestMethod.POST)
     @ApiOperation("Add new worker")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Worker.class)})
     public ResponseEntity<Worker> addWorker(@RequestBody Worker worker) {
-        workerService.addWorker(worker);
-        return new ResponseEntity<Worker>(worker, HttpStatus.OK);
+            workerService.addWorker(worker);
+            return new ResponseEntity<Worker>(worker, HttpStatus.OK);
     }
 
 
@@ -45,8 +47,8 @@ public class Controller {
     @ApiOperation("Update worker")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Update")})
     public ResponseEntity<Void> updateWorker(@RequestBody Worker worker) {
-        workerService.updateWorker(worker);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+            workerService.addWorker(worker);
+            return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "worker/{id}", method = RequestMethod.GET)
@@ -172,25 +174,12 @@ public class Controller {
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "mainDepartment/{id}", method = RequestMethod.DELETE)
-    @ApiOperation("Delete Main department")
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
-    public ResponseEntity<Void> deleteMainDepartment(@PathVariable("id") int id) {
-        List list=mainDepartmentService.getDepartmentById(id);
-        if (list.isEmpty()) {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-        } else {
-            mainDepartmentService.deleteDepartment(id);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        }
-    }
-
     @RequestMapping(value = "mainDepartment/{id}", method = RequestMethod.GET)
     @ApiOperation("Get main department by ID")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     public ResponseEntity<List> getMainDepartmentById(@PathVariable("id") int id) {
-        List list = mainDepartmentService.getDepartmentById(id);
-        return new ResponseEntity<List>(list, HttpStatus.OK);
+        List deplist = mainDepartmentService.getDepartmentById(id);
+        return new ResponseEntity<List>(deplist, HttpStatus.OK);
     }
 
     @RequestMapping(value = "mainDepartment/id/{id}", method = RequestMethod.GET)
